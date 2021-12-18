@@ -14,8 +14,8 @@ class HistoryActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar_history_activity)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true) //set back button
-        supportActionBar?.title = "HISTORY" // Setting an title in the action bar.
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "HISTORY"
 
         toolbar_history_activity.setNavigationOnClickListener {
             onBackPressed()
@@ -26,11 +26,10 @@ class HistoryActivity : AppCompatActivity() {
 
     private fun getAllCompletedDates() {
 
-        // Instance of the Sqlite Open Helper class.
         val dbHandler = SqliteOpenHelper(this, null)
 
         val allCompletedDatesList =
-            dbHandler.getAllCompletedDatesList() // List of history table data
+            dbHandler.getAllCompletedDatesList()
 
         if (allCompletedDatesList.size > 0) {
 

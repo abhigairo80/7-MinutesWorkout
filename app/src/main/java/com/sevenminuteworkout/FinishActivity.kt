@@ -30,17 +30,17 @@ class FinishActivity : AppCompatActivity() {
 
     private fun addDateToDatabase() {
 
-        val c = Calendar.getInstance() // Calender Current Instance
-        val dateTime = c.time // Current Date and Time of the system.
-        Log.e("Date : ", "" + dateTime) // Printed in the log.
+        val c = Calendar.getInstance()
+        val dateTime = c.time
+        Log.e("Date : ", "" + dateTime)
 
-        val sdf = SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault()) // Date Formatter
-        val date = sdf.format(dateTime) // dateTime is formatted in the given format.
-        Log.e("Formatted Date : ", "" + date) // Formatted date is printed in the log.
+        val sdf = SimpleDateFormat("dd MMM yyyy HH:mm:ss", Locale.getDefault())
+        val date = sdf.format(dateTime)
+        Log.e("Formatted Date : ", "" + date)
 
         // Instance of the Sqlite Open Helper class.
         val dbHandler = SqliteOpenHelper(this, null)
         dbHandler.addDate(date) // Add date function is called.
-        Log.e("Date : ", "Added...") // Printed in log which is printed if the complete execution is done.
+        Log.e("Date : ", "Added...")
     }
 }

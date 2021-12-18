@@ -19,21 +19,21 @@ import kotlin.collections.ArrayList
 class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
     private var restTimer: CountDownTimer? =
-        null // Variable for Rest Timer and later on we will initialize it.
+        null
     private var restProgress =
-        0 // Variable for timer progress. As initial the rest progress is set to 0. As we are about to start.
+        0
 
-    private var exerciseTimer: CountDownTimer? = null // Variable for Exercise Timer and later on we will initialize it.
-    private var exerciseProgress = 0 // Variable for exercise timer progress. As initial the exercise progress is set to 0. As we are about to start.
+    private var exerciseTimer: CountDownTimer? = null
+    private var exerciseProgress = 0
 
-    private var exerciseList: ArrayList<ExerciseModel>? = null // We will initialize the list later.
-    private var currentExercisePosition = -1 // Current Position of Exercise.
+    private var exerciseList: ArrayList<ExerciseModel>? = null
+    private var currentExercisePosition = -1
 
-    private var tts: TextToSpeech? = null // Variable for Text to Speech
+    private var tts: TextToSpeech? = null
 
-    private var player: MediaPlayer? = null // Created a varible for Media Player to use later.
+    private var player: MediaPlayer? = null
 
-    // Declaring a exerciseAdapter object which will be initialized later.
+
     private var exerciseAdapter: ExerciseStatusAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +42,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
         setSupportActionBar(toolbar_exercise_activity)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        // Navigate the activity on click on back button of action bar.
         toolbar_exercise_activity.setNavigationOnClickListener {
             customDialogForBackButton()
         }
@@ -51,15 +50,12 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
         exerciseList = Constants.defaultExerciseList()
 
-        setupRestView() // REST View is set in this function
+        setupRestView()
 
-        // setting up the exercise recycler view
         setupExerciseStatusRecyclerView()
     }
 
-    /**
-     * Here is Destroy function we will reset the rest timer to initial if it is running.
-     */
+
     public override fun onDestroy() {
         if (restTimer != null) {
             restTimer!!.cancel()
@@ -82,15 +78,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         super.onDestroy()
     }
 
-    /**
-     * This the TextToSpeech override function
-     *
-     * Called to signal the completion of the TextToSpeech engine initialization.
-     */
     override fun onInit(status: Int) {
 
         if (status == TextToSpeech.SUCCESS) {
-            // set US English as language for tts
             val result = tts!!.setLanguage(Locale.US)
 
             if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
@@ -101,10 +91,6 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
             Log.e("TTS", "Initialization Failed!")
         }
     }
-
-    /**
-     * Function is used to set the timer for REST.
-     */
     private fun setupRestView() {
 
         /**
@@ -126,37 +112,33 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
         llRestView.visibility = View.VISIBLE
         llExerciseView.visibility = View.GONE
 
-        /**
-         * Here firstly we will check if the timer is running the and it is not null then cancel the running timer and start the new one.
-         * And set the progress to initial which is 0.
-         */
+
         if (restTimer != null) {
             restTimer!!.cancel()
             restProgress = 0
         }
         tvUpcomingExerciseName.text = exerciseList!![currentExercisePosition + 1].getName()
 
-        // This function is used to set the progress details.
         setRestProgressBar()
     }
 
     private fun setRestProgressBar() {
 
-        progressBar.progress = restProgress // Sets the current progress to the specified value.
+        progressBar.progress = restProgress
 
         restTimer = object : CountDownTimer(10000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
-                restProgress++ // It is increased to ascending order
-                progressBar.progress = 10 - restProgress // Indicates progress bar progress
+                restProgress++
+                progressBar.progress = 10 - restProgress
                 tvTimer.text =
-                    (10 - restProgress).toString()  // Current progress is set to text view in terms of seconds.
+                    (10 - restProgress).toString()
             }
 
             override fun onFinish() {
                 currentExercisePosition++
 
-                exerciseList!![currentExercisePosition].setIsSelected(true) // Current Item is selected
-                exerciseAdapter!!.notifyDataSetChanged() // Notified the current item to adapter class to reflect it into UI.
+                exerciseList!![currentExercisePosition].setIsSelected(true)
+                exerciseAdapter!!.notifyDataSetChanged()
 
                 setupExerciseView()
             }
@@ -192,9 +174,9 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
             }
 
             override fun onFinish() {
-                exerciseList!![currentExercisePosition].setIsSelected(false) // exercise is completed so selection is set to false
-                exerciseList!![currentExercisePosition].setIsCompleted(true) // updating in the list that this exercise is completed
-                exerciseAdapter!!.notifyDataSetChanged() // Notifying to adapter class.
+                exerciseList!![currentExercisePosition].setIsSelected(false)
+                exerciseList!![currentExercisePosition].setIsCompleted(true)
+                exerciseAdapter!!.notifyDataSetChanged()
 
                 if (currentExercisePosition < 11) {
                     setupRestView()
@@ -226,12 +208,10 @@ class ExerciseActivity : AppCompatActivity(), TextToSpeech.OnInitListener  {
 
     private fun customDialogForBackButton() {
         val customDialog = Dialog(this)
-        /*Set the screen content from a layout resource.
-         The resource will be inflated, adding all top-level views to the screen.*/
         customDialog.setContentView(R.layout.dialog_custom_back_confirmation)
         customDialog.tvYes.setOnClickListener {
             finish()
-            customDialog.dismiss() // Dialog will be dismissed
+            customDialog.dismiss()
         }
         customDialog.tvNo.setOnClickListener {
             customDialog.dismiss()
